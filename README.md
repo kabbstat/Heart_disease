@@ -19,3 +19,10 @@ Slope: The slope of the peak exercise ST segment
 Ca: Number of major vessels (0–3) colored by fluoroscopy
 Thal: Thalassemia (3 = Normal, 6 = Fixed defect, 7 = Reversible defect)
 Target: The target variable (1 = Heart disease, 0 = No heart disease)
+# Models Used
+Several machine learning algorithms were tested for this project:
+
+Logistic Regression
+Decision Tree
+Random Forest
+Support Vector Machine (SVM)
