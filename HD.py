@@ -52,9 +52,9 @@ plt.xlabel('Category')
 plt.ylabel('Count')
 plt.show()
 # THAL
-#sns.countplot(x='thal', data=df)
-#plt.title('Count of Each Category in Column of thal variable')
-#plt.show()
+sns.countplot(x='thal', data=df)
+plt.title('Count of Each Category in Column of thal variable')
+plt.show()
 ax = sns.countplot(x='thal', data=df)
 for p in ax.patches:
     ax.annotate(f'{p.get_height():,.0f}',(p.get_x() + p.get_width() / 2., p.get_height()))
