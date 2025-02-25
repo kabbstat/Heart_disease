@@ -1,8 +1,8 @@
-## HEART DISEASE PROJECT 
+# HEART DISEASE PROJECT 
 This repository contains a machine learning project designed to predict the likelihood of heart disease in patients using clinical data. The objective is to develop a supervised learning model capable of classifying patients as either at risk (heart disease present) or not at risk (no heart disease), leveraging various medical attributes.
-# Project Overview
+## Project Overview
 Heart disease remains a leading cause of mortality worldwide, making early detection critical. This project applies machine learning techniques to analyze patient data and provide predictive insights, potentially aiding healthcare professionals in decision-making. The dataset includes 303 patient records with 14 attributes, and the final model aims to achieve high accuracy and interpretability.
-# Dataset
+## Dataset
 The dataset is sourced from the UCI Machine Learning Repository and comprises 303 entries with the following 14 features:
 
 Age: Patient's age in years (e.g., 29–77).
@@ -20,7 +20,7 @@ Ca: Number of major vessels (0–4) colored by fluoroscopy.
 Thal: Thalassemia status (0 = Not specified, 1 = Normal, 2 = Fixed defect, 3 = Reversible defect).
 Target: Presence of heart disease (1 = Heart disease, 0 = No heart disease).
 The dataset provided includes real-world clinical measurements.
-# Models Used
+## Models Used
 Several machine learning algorithms were tested for this project:
 
 Logistic Regression: A baseline linear model for binary classification.
