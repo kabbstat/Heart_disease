@@ -53,6 +53,7 @@ plot_countplot('target', 'Distribution de la variable cible (target)')
 # Distribution de la variable cible par rapport à d'autres variables
 plot_countplot('slope', 'Distribution de slope par rapport à la cible', hue='target')
 plot_countplot('thal', 'Distribution de thal par rapport à la cible', hue='target')
+plot_countplot('sex', 'Distribution du sex par rapport à la cible', hue= 'target')
 
 # Distribution de l'âge par rapport à la cible
 df['age_group'] = pd.cut(df['age'], bins=[25, 40, 45, 50, 55, 60, 65, 80], labels=['25-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-80'])
@@ -64,7 +65,7 @@ plot_countplot('trestbps_group', 'Distribution de trestbps par rapport à la cib
 
 # Matrice de corrélation
 plt.figure(figsize=(12, 8))
-corr_matrix = df.corr()
+corr_matrix = df.drop(['age_group','trestbps_group'], axis=1).corr()
 sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f")
 plt.title('Matrice de corrélation')
 plt.show()
@@ -75,11 +76,14 @@ def chi2_test(column):
     chi2_stat, p_value, dof, expected = chi2_contingency(contingency_table)
     print(f"Test du Khi-deux pour {column}:")
     print(f"Statistique de test: {chi2_stat:.4f}, p-value: {p_value:.4f}")
+    if p_value<0.05:
+        print(f"{column} is significatly associated with heart disease")
+    else : print(f"{column} no significant association between {column} and heart disease.")
 
-chi2_test('sex')
-chi2_test('cp')
-chi2_test('slope')
-chi2_test('thal')
+categorical_vars=['sex','cp','slope','thal']
+for v in categorical_vars:
+    chi2_test(v)
+
 
 # Préparation des données pour le modèle
 X = df.drop('target', axis=1)
