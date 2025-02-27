@@ -97,7 +97,20 @@ print("Training labels shape:", y_train.shape)
 print("Testing labels shape:", y_test.shape)
 
 # Modélisation
-
+# function of modeling 
+def evaluatemodel(model, X_train, X_test, y_train, y_test, model_name):
+    model.fit(X_train,y_train)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_pred,y_test)
+    report = classification_report(y_pred, y_test)
+    print(f"\n=== {model_name} ===")
+    print(f"Accuracy: {accuracy:.4f}")
+    print("Classification Report:\n", report)
+    return model
+rf = evaluatemodel(RandomForestClassifier(random_state=42),X_train,X_test,y_train,y_test, "Random_forest")
+a_nn = evaluatemodel(MLPClassifier(hidden_layer_sizes=(100,), max_iter=1000, random_state=42), X_train,X_test,y_train,y_test, "ANN avec 1 hidden layer")
+d_tree = evaluatemodel(DecisionTreeClassifier(random_state=42),X_train,X_test,y_train,y_test, "Decision_Tree")
+svm_svc = evaluatemodel(svm.SVC(random_state=42, ) ,X_train,X_test,y_train,y_test, "svm_classifier" )
 ## Random Forest
 clf = RandomForestClassifier(random_state=42)
 clf.fit(X_train, y_train)
