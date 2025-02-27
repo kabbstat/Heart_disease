@@ -112,6 +112,7 @@ a_nn = evaluatemodel(MLPClassifier(hidden_layer_sizes=(100,), max_iter=1000, ran
 d_tree = evaluatemodel(DecisionTreeClassifier(random_state=42),X_train,X_test,y_train,y_test, "Decision_Tree")
 svm_svc = evaluatemodel(svm.SVC(random_state=42, ) ,X_train,X_test,y_train,y_test, "svm_classifier" )
 ## Random Forest
+'''
 clf = RandomForestClassifier(random_state=42)
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
@@ -119,7 +120,7 @@ accuracy = accuracy_score(y_test, y_pred)
 print("\n=== Random Forest ===")
 print("Accuracy:", accuracy)
 print("Classification Report:\n", classification_report(y_test, y_pred))
-
+'''
 ## Régression Logistique
 lr = LogisticRegression(random_state=42)
 lr.fit(X_train, y_train)
@@ -149,6 +150,7 @@ print("\n=== Intervalles de confiance des Odds Ratios ===")
 print(conf_int_odds)
 
 ## Réseau de neurones (ANN)
+'''
 ann = MLPClassifier(hidden_layer_sizes=(100,), max_iter=1000, random_state=42)
 ann.fit(X_train, y_train)
 y_pred = ann.predict(X_test)
@@ -156,8 +158,9 @@ accuracy_ann = accuracy_score(y_test, y_pred)
 print("\n=== Réseau de Neurones (ANN) ===")
 print("Accuracy:", accuracy_ann)
 print("Classification Report:\n", classification_report(y_test, y_pred))
-
+'''
 ## Arbre de décision
+'''
 dt = DecisionTreeClassifier(random_state=42)
 dt.fit(X_train, y_train)
 y_pred = dt.predict(X_test)
@@ -165,8 +168,9 @@ accuracy_dt = accuracy_score(y_test, y_pred)
 print("\n=== Arbre de Décision ===")
 print("Accuracy:", accuracy_dt)
 print("Classification Report:\n", classification_report(y_test, y_pred))
-
+'''
 ## SVM
+'''
 sup_vm = svm.SVC(random_state=42)
 sup_vm.fit(X_train, y_train)
 y_pred = sup_vm.predict(X_test)
@@ -174,3 +178,4 @@ accuracy_svm = accuracy_score(y_test, y_pred)
 print("\n=== SVM ===")
 print("Accuracy:", accuracy_svm)
 print("Classification Report:\n", classification_report(y_test, y_pred))
+'''
