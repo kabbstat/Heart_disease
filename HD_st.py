@@ -16,7 +16,11 @@ import statsmodels.api as sm
 
 # Configuration de la page Streamlit
 st.set_page_config(page_title="Heart Disease Prediction", layout="wide")
-st.title("Prédiction des Maladies Cardiaques")
+col1, col2, col3 = st.columns([1,2,1])
+with col2:
+  st.title("Prédiction des Maladies Cardiaques")
+with col2:
+  st.image("Heart-Disease.jpg", caption="Prédiction des Maladies Cardiaques", width=500)
 
 # Chargement des données
 @st.cache_data  # Cache pour accélérer le chargement
@@ -85,7 +89,7 @@ elif section == "Visualisations":
     # Sélection des visualisations via une liste déroulante
     viz_options = [
         "Sexe", "Type de douleur (cp)", "Pente (slope)", "Thalassémie (thal)", "Cible (target)",
-        "Pente par cible", "Thalassémie par cible", "Sexe par cible", "Groupe d'âge par cible", "Pression artérielle par cible"
+        "Pente vs la cible", "Thalassémie vs la cible", "Sexe vs la cible", "Groupe d'âge vs la cible", "Pression artérielle vs la cible"
     ]
     selected_viz = st.selectbox("Choisir une visualisation", viz_options)
 
@@ -99,16 +103,16 @@ elif section == "Visualisations":
         plot_countplot('thal', 'Distribution de la variable thal')
     elif selected_viz == "Cible (target)":
         plot_countplot('target', 'Distribution de la variable cible (target)')
-    elif selected_viz == "Pente par cible":
+    elif selected_viz == "Pente vs la cible":
         plot_countplot('slope', 'Distribution de slope par rapport à la cible', hue='target')
-    elif selected_viz == "Thalassémie par cible":
+    elif selected_viz == "Thalassémie vs la cible":
         plot_countplot('thal', 'Distribution de thal par rapport à la cible', hue='target')
-    elif selected_viz == "Sexe par cible":
+    elif selected_viz == "Sexe vs la cible":
         plot_countplot('sex', 'Distribution du sexe par rapport à la cible', hue='target')
-    elif selected_viz == "Groupe d'âge par cible":
+    elif selected_viz == "Groupe d'âge vs la cible":
         df['age_group'] = pd.cut(df['age'], bins=[25, 40, 45, 50, 55, 60, 65, 80], labels=['25-40', '40-45', '45-50', '50-55', '55-60', '60-65', '65-80'])
         plot_countplot('age_group', 'Distribution de l’âge par rapport à la cible', hue='target')
-    elif selected_viz == "Pression artérielle par cible":
+    elif selected_viz == "Pression artérielle vs la cible":
         df['trestbps_group'] = pd.cut(df['trestbps'], bins=[90, 100, 110, 120, 125, 130, 140, 180, 200], labels=['90-100', '100-110', '110-120', '120-125', '125-130', '130-140', '140-180', '180-200'])
         plot_countplot('trestbps_group', 'Distribution de trestbps par rapport à la cible', hue='target')
 
