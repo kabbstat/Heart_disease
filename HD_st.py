@@ -32,7 +32,7 @@ df = load_data()
 
 # Sidebar pour la navigation
 st.sidebar.header("Navigation")
-section = st.sidebar.radio("Choisir une section", ["Exploration des Données", "Visualisations", "Modélisation"])
+section = st.sidebar.radio("Choisir une section", ["Exploration des Données", "Visualisations", "Modélisation", "Prédiction personnalisé"])
 
 # Fonction pour le test du Khi-deux
 def chi2_test(column, df):
@@ -60,7 +60,7 @@ if section == "Exploration des Données":
 
     st.subheader("Informations sur les données")
     buffer = pd.DataFrame(df.dtypes, columns=["Type"])
-    buffer["Valeurs manquantes"] = df.isnull().sum()
+    buffer["Valeurs manquantes"] = df.isna().sum()
     st.write(buffer)
 
 # Section 2 : Visualisations
@@ -188,6 +188,48 @@ elif section == "Modélisation":
         else:
             st.write(f"Aucune association significative entre {var} et les maladies cardiaques.")
 
+# Prédiction personnalisé
+elif section == "Prédiction personnalisé":
+    st.header("Prédiction personnalisé")
+    st.write("Entrez les valuers pour chaque variable afin d'estimer la probabilité de subir la crise cardiaque")
+    # entrainement du modèle avec la regression logistique (le modèle le plus performant)
+    X=df.drop('target', axis=1)
+    y=df["target"]
+    default_model = LogisticRegression(random_state=42, max_iter=1000)
+    default_model.fit(X,y)
+    # formulaire pour sasir les valeurs
+    with st.form(key='prediction_form'):
+        col1, col2 = st.columns(2)
+        with col1:
+            age = st.number_input("Âge (years)", min_value=0, max_value=120, value=50)
+            sex = st.selectbox("Sexe", options=[0, 1], format_func=lambda x: "Femme" if x == 0 else "Homme")
+            cp = st.selectbox("Type de douleur thoracique", options=[0, 1, 2, 3], format_func=lambda x: ["Angine typique", "Angine atypique", "Non angineuse", "Asymptomatique"][x])
+            trestbps = st.number_input("Pression artérielle au repos (mm Hg)", min_value=50, max_value=250, value=120)
+            chol = st.number_input("Cholestérol sérique (mg/dl)", min_value=50, max_value=600, value=200)
+            fbs = st.selectbox("Glycémie à jeun > 120 mg/dl", options=[0, 1], format_func=lambda x: "Non" if x == 0 else "Oui")
+            restecg = st.selectbox("Résultats ECG au repos", options=[0, 1, 2], format_func=lambda x: ["Normal", "Anomalie ST-T", "Hypertrophie"][x])
+        with col2:
+            thalach = st.number_input("Fréquence cardiaque max", min_value=50, max_value=250, value=150)
+            exang = st.selectbox("Angine à l'effort", options=[0, 1], format_func=lambda x: "Non" if x == 0 else "Oui")
+            oldpeak = st.number_input("Dépression ST (oldpeak)", min_value=0.0, max_value=10.0, value=1.0, step=0.1)
+            slope = st.selectbox("Pente ST", options=[0, 1, 2], format_func=lambda x: ["Ascendante", "Plate", "Descendante"][x])
+            ca = st.number_input("Nombre de vaisseaux (0-3)", min_value=0, max_value=4, value=0)
+            thal = st.selectbox("Thalassémie", options=[0, 1, 2, 3], format_func=lambda x: ["Non spécifié", "Normal", "Défaut fixe", "Défaut réversible"][x])
+
+        submit_button = st.form_submit_button(label="Prédire")
+    if submit_button: # prédire si le button est cliqué
+        # création d'une dataframe avec les valeurs saisies
+        input_data= pd.DataFrame({'age':[age],'sex':[sex], 'cp':[cp], 'trestbps':[trestbps], 'chol':[chol], 'fbs':[fbs], 'restecg':[restecg],
+                                  'thalach':[thalach],'exang':[exang], 'oldpeak':[oldpeak], 'slope':[slope],'ca':[ca],'thal':[thal]}) 
+        proba = default_model.predict_proba(input_data)[0]
+        proba_log = default_model.predict_log_proba(input_data)
+        proba_heart_disease = proba[1] * 100  
+        st.subheader("Résultat de la prédiction")
+        st.write(proba)
+        st.write(f"probabilité de maladie cardiaque: {proba_heart_disease:.2f}%")
+        if proba_heart_disease > 50:
+            st.warning("Risque élevé de maladie cardiaque detecté")
+        else: st.success("Risque faible de maladie cardiaque.")
 # Footer
 st.sidebar.markdown("---")
 st.sidebar.write("Développé avec Streamlit par [KABBAJ MOHAMED]")
