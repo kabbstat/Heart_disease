@@ -191,7 +191,8 @@ elif section == "Modélisation":
 # Prédiction personnalisé
 elif section == "Prédiction personnalisé":
     st.header("Prédiction personnalisé")
-    st.write("Entrez les valuers pour chaque variable afin d'estimer la probabilité de subir la crise cardiaque")
+    st.write("Entrez les valeurs pour chaque variable afin d'estimer la probabilité de subir la crise cardiaque")
+    st.write("Le modèle utiliser pour la prédiction est la regression logistique.")
     # entrainement du modèle avec la regression logistique (le modèle le plus performant)
     X=df.drop('target', axis=1)
     y=df["target"]
@@ -225,7 +226,7 @@ elif section == "Prédiction personnalisé":
         proba_log = default_model.predict_log_proba(input_data)
         proba_heart_disease = proba[1] * 100  
         st.subheader("Résultat de la prédiction")
-        st.write(proba)
+        st.write(proba_log)
         st.write(f"probabilité de maladie cardiaque: {proba_heart_disease:.2f}%")
         if proba_heart_disease > 50:
             st.warning("Risque élevé de maladie cardiaque detecté")
