@@ -5,20 +5,20 @@ Heart disease remains a leading cause of mortality worldwide, making early detec
 ## Dataset
 The dataset is sourced from the UCI Machine Learning Repository and comprises 303 entries with the following 14 features:
 
-Age: Patient's age in years (e.g., 29–77).
-Sex: Gender (1 = Male, 0 = Female).
-CP: Chest pain type (0 = Typical angina, 1 = Atypical angina, 2 = Non-anginal pain, 3 = Asymptomatic).
-Trestbps: Resting blood pressure in mm Hg (e.g., 94–200).
-Chol: Serum cholesterol in mg/dl (e.g., 126–564).
-Fbs: Fasting blood sugar > 120 mg/dl (1 = True, 0 = False).
-Restecg: Resting electrocardiographic results (0 = Normal, 1 = ST-T wave abnormality, 2 = Left ventricular hypertrophy).
-Thalach: Maximum heart rate achieved (e.g., 71–202).
-Exang: Exercise-induced angina (1 = Yes, 0 = No).
-Oldpeak: ST depression induced by exercise relative to rest (e.g., 0–6.2).
-Slope: Slope of the peak exercise ST segment (0 = Upsloping, 1 = Flat, 2 = Downsloping).
-Ca: Number of major vessels (0–4) colored by fluoroscopy.
-Thal: Thalassemia status (0 = Not specified, 1 = Normal, 2 = Fixed defect, 3 = Reversible defect).
-Target: Presence of heart disease (1 = Heart disease, 0 = No heart disease).
+-Age: Patient's age in years (e.g., 29–77).
+-Sex: Gender (1 = Male, 0 = Female).
+-CP: Chest pain type (0 = Typical angina, 1 = Atypical angina, 2 = Non-anginal pain, 3 = Asymptomatic).
+-Trestbps: Resting blood pressure in mm Hg (e.g., 94–200).
+-Chol: Serum cholesterol in mg/dl (e.g., 126–564).
+-Fbs: Fasting blood sugar > 120 mg/dl (1 = True, 0 = False).
+-Restecg: Resting electrocardiographic results (0 = Normal, 1 = ST-T wave abnormality, 2 = Left ventricular hypertrophy).
+-Thalach: Maximum heart rate achieved (e.g., 71–202).
+-Exang: Exercise-induced angina (1 = Yes, 0 = No).
+-Oldpeak: ST depression induced by exercise relative to rest (e.g., 0–6.2).
+-Slope: Slope of the peak exercise ST segment (0 = Upsloping, 1 = Flat, 2 = Downsloping).
+-Ca: Number of major vessels (0–4) colored by fluoroscopy.
+-Thal: Thalassemia status (0 = Not specified, 1 = Normal, 2 = Fixed defect, 3 = Reversible defect).
+-Target: Presence of heart disease (1 = Heart disease, 0 = No heart disease).
 The dataset provided includes real-world clinical measurements.
 ## Models Used
 Several machine learning algorithms were tested for this project:
@@ -29,3 +29,11 @@ Random Forest: An ensemble method to improve accuracy and reduce overfitting.
 Support Vector Machine (SVM): A robust classifier for handling non-linear relationships.
 
 Each model was evaluated using metrics such as accuracy, precision, recall, and F1-score, with hyperparameter tuning applied where applicable.
+## Personalized prediction
+The project includes an interactive feature implemented via a Streamlit application, allowing users to input custom values for each of the 13 explanatory variables (e.g., age, sex, cholesterol, etc.). A trained Logistic Regression model then estimates the probability of heart disease based on these inputs. This feature provides:
+- **User Input**: A form where users can specify values for all clinical attributes.
+- **Probability Output**: The model returns a percentage probability of heart disease (e.g., "73% chance of heart disease"), leveraging the linear relationship between features and the target.
+- **Risk Assessment**: A simple threshold (e.g., >50%) indicates whether the risk is high or low, with visual feedback provided to the user.
+
+This functionality enhances the practical utility of the project by enabling individualized risk assessment directly within the application, supported by the interpretability of logistic regression.
+
