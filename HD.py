@@ -1,8 +1,9 @@
 # Importations des bibliothèques
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split, cross_validate
+from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestClassifier, HistGradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -88,6 +89,13 @@ for v in categorical_vars:
 # Préparation des données pour le modèle
 X = df.drop('target', axis=1)
 y = df['target']
+#classifier = HistGradientBoostingClassifier(random_state=42, max_depth=4, max_leaf_nodes=4)
+#classifier = LogisticRegression(random_state=42)
+classifier = RandomForestClassifier(random_state=42,n_estimators=20,max_depth=5)
+model = Pipeline([("classifier", classifier)])
+cv_results = cross_validate(model,X,y, cv=10, n_jobs=2)
+cv_results = pd.DataFrame(cv_results)
+print(f"{cv_results["test_score"].mean():.3f} +- {cv_results["test_score"].std():.3f}")
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 print("\n=== Forme des données ===")
@@ -107,7 +115,7 @@ def evaluatemodel(model, X_train, X_test, y_train, y_test, model_name):
     print(f"Accuracy: {accuracy:.4f}")
     print("Classification Report:\n", report)
     return model
-rf = evaluatemodel(RandomForestClassifier(random_state=42),X_train,X_test,y_train,y_test, "Random_forest")
+rf = evaluatemodel(RandomForestClassifier(random_state=42,n_estimators=20,max_depth=5),X_train,X_test,y_train,y_test, "Random_forest")
 a_nn = evaluatemodel(MLPClassifier(hidden_layer_sizes=(100,), max_iter=1000, random_state=42), X_train,X_test,y_train,y_test, "ANN avec 1 hidden layer")
 d_tree = evaluatemodel(DecisionTreeClassifier(random_state=42),X_train,X_test,y_train,y_test, "Decision_Tree")
 svm_svc = evaluatemodel(svm.SVC(random_state=42, ) ,X_train,X_test,y_train,y_test, "svm_classifier" )
