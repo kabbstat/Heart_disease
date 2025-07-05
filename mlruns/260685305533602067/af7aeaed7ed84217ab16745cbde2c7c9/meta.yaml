@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/260685305533602067/af7aeaed7ed84217ab16745cbde2c7c9/artifacts
+end_time: 1751725143072
+entry_point_name: ''
+experiment_id: '260685305533602067'
+lifecycle_stage: active
+run_id: af7aeaed7ed84217ab16745cbde2c7c9
+run_name: experimentation de SVM
+run_uuid: af7aeaed7ed84217ab16745cbde2c7c9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751725142871
+status: 3
+tags: []
+user_id: HP

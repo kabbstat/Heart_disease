@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/842290492357857298/dc9632d8866c4109a941780e12cf26fc/artifacts
+end_time: 1751726431581
+entry_point_name: ''
+experiment_id: '842290492357857298'
+lifecycle_stage: active
+run_id: dc9632d8866c4109a941780e12cf26fc
+run_name: Hyperparameter of LogisticRegression
+run_uuid: dc9632d8866c4109a941780e12cf26fc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751726421172
+status: 3
+tags: []
+user_id: HP

@@ -1,0 +1,44 @@
+#data_collection:
+#   data_path: "C:\\Users\\pc\\Desktop\\water_potability.csv"
+#   test_size: 0.2
+
+experiment:
+  cv: 5
+  models:
+    RandomForest:
+      class: ensemble.RandomForestClassifier
+      params: {}
+    GradientBoosting:
+      class: ensemble.GradientBoostingClassifier
+      params: {}
+    HistGradientBoosting:
+      class: ensemble.HistGradientBoostingClassifier
+      params: {}
+    SVM:
+      class: svm.SVC
+      params:
+        probability: true
+    LogisticRegression:
+      class: linear_model.LogisticRegression
+      params: 
+        max_iter: 100
+
+experiment_hyper:
+  cv: 5
+  param_grid:
+    RandomForest:
+      n_estimators: [50, 100, 200, 300]
+      max_depth: [None, 5, 10, 20, 30]
+    GradientBoosting:
+      n_estimators: [50, 100, 200]
+      learning_rate: [0.01, 0.1, 0.2]
+    HistGradientBoosting:  
+      max_iter: [100, 200, 300]
+      learning_rate: [0.01, 0.1, 0.2]
+    SVM:  
+      C: [0.1, 1, 10]
+      kernel: ['linear', 'rbf']
+    LogisticRegression:  
+      C: [0.01, 0.1, 1, 10, 100]
+      solver: ['liblinear', 'lbfgs']
+      penalty: ['l1', 'l2']

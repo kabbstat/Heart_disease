@@ -25,7 +25,7 @@ with col2:
 # Chargement des données
 @st.cache_data  # Cache pour accélérer le chargement
 def load_data():
-    df = pd.read_csv('C:/Users/pc/Desktop/KABBAJ DOC/EDUCATIONNEL/data challenge/Heart_disease/heart-disease.csv')
+    df = pd.read_csv('heart-disease.csv')
     return df
 
 df = load_data()
