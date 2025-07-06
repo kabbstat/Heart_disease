@@ -42,11 +42,6 @@ def chi2_test(column, df):
     return chi2_stat, p_value
 
 # Fonction pour évaluer les modèles
-def cross_vali(model, X, y, cv):
-    cv = cross_validate(model, X, y, cv=cv,scoring='accuracy', n_jobs=-1)
-    accuracy_score_mean = cv['test_score'].mean()
-    accuracy_score_st = cv['test_score'].mean()
-    best_params_cv = cv
 def evaluate_model(model, X_train, X_test, y_train, y_test, model_name):
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)

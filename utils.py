@@ -24,14 +24,27 @@ def get_model_class(model_config):
     return getattr(module, class_name)
 
 def load_best_model():
-    with open('best_model.txt') as f:
-        best_model_name = f.read().strip()
-    return best_model_name
+    try:
+        with open('best_model.txt') as f:
+            best_model_name = f.read().strip()
+        return best_model_name
+    except FileNotFoundError :
+        return None
 
 def load_best_params():
-    with open('best_model_params.json','r') as f:
-        best_params = json.load(f)
-    return best_params
+    try:
+        with open('best_model_params.json','r') as f:
+            best_params = json.load(f)
+        return best_params
+    except FileNotFoundError:
+        return None
+
+def save_best_model(model_name):
+    with open('best_model.txt','w') as f:
+        f.write(model_name)
+def save_best_params(params):
+    with open('best_model_params.json','w') as f:
+        json.dump(params, f, indent=2)
     
     
     
