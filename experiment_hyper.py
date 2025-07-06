@@ -4,7 +4,6 @@ import mlflow.sklearn
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 import json
-import importlib
 from utils import load_data, get_model_class, load_params
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
  
