@@ -1,0 +1,48 @@
+
+name: CI
+on:
+  push:
+    branches:
+       - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+  #  steps:
+  #  - name: checkout code
+  #    uses: actions/checkout@v3
+  #    with:
+ #       fetch-depth: 0
+ #   - name: setup python
+  #    uses: actions/setup-python@v3
+  #    with:
+  #      python-version: '3.9'
+  #  - name: Install system dependencies
+  #    run: sudo apt-get update && sudo apt-get install -y git dvc python3-dev
+  #  - name: cache pip
+  #    uses: actions/cache@v3
+  #    with:
+  #      path: ~/.cache/pip
+  #      key: ${{runner.os}}-pip-${{hashFiles('requirements.txt')}}
+  #      restore-keys: |
+  #          ${{runner.os}}-pip-
+  #  - name: install dependencies
+  #    run: | 
+  #      pip install -r 'requirements.txt'
+ #   - name: RUN DVC PIPELINE
+ #     run: dvc repro
+ #   - name: PUSH DVC artifact
+  #    run: | 
+   #     dvc push 
+   # - name: run streamlit interface
+   #   run: streamlit run HD_stream.py
+   # - name: Build docker image
+   #   run: docker build -t my-ml-pipeline
+   # - name: Run docker image
+   #   run: |
+    #        docker run -d \
+     #       -p 8080:8080 \
+     #       -v $(pwd)/data:/app/data \
+     #       -v $(pwd)/models:/app/models \
+     #       my-ml-pipeline
+       
