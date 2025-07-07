@@ -1,9 +1,6 @@
 import pandas as pd
 import mlflow
 import mlflow.sklearn
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-import json
 from utils import load_data, get_model_class, load_params, load_best_model, save_best_params
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
  
@@ -41,9 +38,3 @@ def main():
         print(f"meilleure score cv {best_score_mean:.4f}+\-{best_score_std:.4f}")
 if __name__ == "__main__":
     main()
-        
-#     pipeline = Pipeline([('scaler',StandardScaler()),
-#                         ('random_forest', RandomForestClassifier() )])   
-    
-
-    
