@@ -13,8 +13,14 @@ from scipy.stats import chi2_contingency
 import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.api as sm
-from utils import load_data, split_data, get_model_class, load_best_model, load_best_params
-
+#from utils import load_data, split_data, get_model_class, load_best_model, load_best_params
+import warnings
+warnings.filterwarnings('ignore')
+try:
+    from utils import load_data, split_data, get_model_class, load_best_model, load_best_params, load_params
+except ImportError:
+    st.error("Erreur: Impossible d'importer les fonctions utilitaires. Assurez-vous que utils.py est présent.")
+    st.stop()
 # Configuration de la page Streamlit
 st.set_page_config(page_title="Heart Disease Prediction", layout="wide")
 col1, col2, col3 = st.columns([1,2,1])
@@ -25,11 +31,16 @@ with col2:
 
 # Chargement des données
 @st.cache_data  # Cache pour accélérer le chargement
-def load_data():
-    df = pd.read_csv('heart-disease.csv')
-    return df
+def load_heart_data():
+    try:    
+        df = pd.read_csv('heart-disease.csv')
+        return df
+    except FileNotFoundError:
+        st.error("Fichier heart-disease.csv non trouvé. Veuillez vous assurer qu'il est dans le répertoire.")
+    except Exception as e:
+        st.error(f"erreur lors du chargement des données:{e}")
 
-df = load_data()
+df = load_heart_data()
 
 # Sidebar pour la navigation
 st.sidebar.header("Navigation")
@@ -60,8 +71,23 @@ if section == "Exploration des Données":
     st.write(df.describe())
 
     st.subheader("Informations sur les données")
-    buffer = pd.DataFrame(df.dtypes, columns=["Type"])
-    buffer["Valeurs manquantes"] = df.isna().sum()
+    col1 , col2 = st.columns(2)
+    with col1:
+        st.write(f"**Nombre de lignes**: {df.shape[0]}")
+        st.write(f"**Nombre de colonnes**: {df.shape[1]}")
+        st.write(f"**Valeurs manquantes**: {df.isna().sum().sum()}")
+    with col2:
+        st.write("**Distribution de la variable cible**:")
+        target_counts = df['target'].value_counts()
+        st.write(f"- Pas de maladie cardiaque: {target_counts[0]} ({target_counts[0]/len(df)*100:.1f}%)")
+        st.write(f"- Maladie cardiaque: {target_counts[1]} ({target_counts[1]/len(df)*100:.1f}%)")
+    st.subheader("Informations sur les types de données")
+    buffer = pd.DataFrame({
+        'Variable': df.columns,
+        'Type': df.dtypes,
+        'Valeurs manquantes': df.isna().sum(),
+        'Valeurs uniques': df.nunique()
+    })
     st.write(buffer)
 
 # Section 2 : Visualisations
@@ -132,56 +158,64 @@ elif section == "Modélisation":
     # Préparation des données et du modele 
     X,y = load_data()
     X_train, X_test, y_train, y_test = split_data(X,y)
-    best_model_name = load_best_model()
-    best_params = load_best_params()
-    
-    
     st.subheader("Forme des données")
     st.write(f"Données d'entraînement : {X_train.shape}")
     st.write(f"Données de test : {X_test.shape}")
     st.write(f"Étiquettes d'entraînement : {y_train.shape}")
     st.write(f"Étiquettes de test : {y_test.shape}")
     st.subheader("Experimentation avec mlflow")
+    params = load_params()
+    best_model_name = load_best_model()
+    best_params = load_best_params()
+    model_class = get_model_class(params["experiment"]["models"][best_model_name])
+    if best_params:
+        model = model_class(**best_params)
+    else:
+        model = model_class(**params["experiment"]["models"][best_model_name].get("params",{}))
     st.write(f"le meilleure model est {best_model_name}")
     st.write(f"best hyperparemeter pour ce modele avec un grid_search est {best_params}")
     # Sélection du modèle
     model_options = ["Forêt Aléatoire", "Régression Logistique", "Réseau de Neurones", "Arbre de Décision", "SVM"]
     selected_model = st.selectbox("Choisir un modèle", model_options)
 
-    # Initialisation des modèles
-    models = {
-        "Forêt Aléatoire": RandomForestClassifier(random_state=42),
-        "Régression Logistique": LogisticRegression(random_state=42, max_iter=1000),
-        "Réseau de Neurones": MLPClassifier(hidden_layer_sizes=(100,), max_iter=1000, random_state=42),
-        "Arbre de Décision": DecisionTreeClassifier(random_state=42),
-        "SVM": svm.SVC(random_state=42)
-    }
-
     # Évaluation du modèle sélectionné
     if st.button("Évaluer le modèle"):
-        model = models[selected_model]
-        accuracy, report, trained_model = evaluate_model(model, X_train, X_test, y_train, y_test, selected_model)
-        st.subheader(f"Résultats pour {selected_model}")
-        st.write(f"**Précision** : {accuracy:.4f}")
-        st.write("**Rapport de classification** :")
-        st.write(pd.DataFrame(report).T)
+        with st.spinner(f"Evaluation du modéle {selected_model}"):
+            try:
+                accuracy, report, trained_model = evaluate_model(model, X_train, X_test, y_train, y_test, selected_model)
+                st.subheader(f"Résultats pour {selected_model}")
+                col1, col2, col3 = st.columns([1,2,1])
+                with col1:
+                    st.metric("precision", f"{accuracy:.4f}")
+                with col2:
+                    st.metric("précision classe 1", f"{report['1']['precision']:.4f}")
+                with col3:
+                    st.metric("rappel classe 1", f"{report['1']['recall']:.4f}")
+                st.write("**Rapport de classification** :")
+                report_df = pd.DataFrame(report).T
+                st.dataframe(report_df.round(4))
 
         # Résultats détaillés pour la régression logistique
-        if selected_model == "Régression Logistique":
-            X_train_sm = sm.add_constant(X_train)
-            logit_model = sm.Logit(y_train, X_train_sm)
-            result = logit_model.fit()
-            st.subheader("Résultats détaillés de la régression logistique")
-            st.text(result.summary().as_text())
+                if selected_model == "Régression Logistique":
+                    st.subheader("Analyse détaillée de la régression logistique")
+                    try:
+                        X_train_sm = sm.add_constant(X_train)
+                        logit_model = sm.Logit(y_train, X_train_sm)
+                        result = logit_model.fit()
+                        st.subheader("Résultats détaillés de la régression logistique")
+                        st.text(result.summary().as_text())
 
-            odds_ratios = np.exp(result.params)
-            conf_int = np.exp(result.conf_int())
-            conf_int.columns = ['2.5%', '97.5%']
-            st.write("**Odds Ratios** :")
-            st.write(pd.DataFrame(odds_ratios, columns=["Odds Ratio"]))
-            st.write("**Intervalles de confiance des Odds Ratios** :")
-            st.write(conf_int)
-
+                        odds_ratios = np.exp(result.params)
+                        conf_int = np.exp(result.conf_int())
+                        conf_int.columns = ['2.5%', '97.5%']
+                        st.write("**Odds Ratios** :")
+                        st.write(pd.DataFrame(odds_ratios, columns=["Odds Ratio"]))
+                        st.write("**Intervalles de confiance des Odds Ratios** :")
+                        st.write(conf_int)
+                    except Exception as e:
+                         st.error(f"Erreur lors de l'analyse détaillée {e}")
+            except Exception as e:
+                st.error(f"error lors de l'évaluation: {e}")
     # Test du Khi-deux pour les variables catégoriques
     st.subheader("Test du Khi-deux")
     categorical_vars = ['sex', 'cp', 'slope', 'thal']

@@ -1,0 +1,30 @@
+stages:
+  experiment:
+    cmd: python experiment.py
+    deps:
+    - experiment.py
+    - utils.py
+    outs:
+    - best_model.txt
+  experiment_hyper:
+    cmd: python experiment_hyper.py
+    deps:
+    - best_model.txt
+    - experiment.py
+    - experiment_hyper.py
+    - utils.py
+    outs:
+    - best_model_params.json
+
+  model_eval:
+    cmd: python model_eval.py
+    deps:
+    - best_model_params.json
+    - experiment_hyper.py
+    - utils.py
+  stream_experiment:
+    cmd: python HD_stream.py
+    deps:
+    - best_model_params.json
+    - experiment_hyper.py
+    - utils.py

@@ -1,8 +1,5 @@
 import pandas as pd 
-from sklearn.model_selection import train_test_split, cross_validate
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, HistGradientBoostingClassifier
-from sklearn.metrics import accuracy_score, f1_score, recall_score
+from sklearn.model_selection import cross_validate
 import mlflow
 from utils import load_data, load_params, get_model_class, save_best_model
 import mlflow.sklearn 
