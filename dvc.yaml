@@ -23,8 +23,8 @@ stages:
     - experiment_hyper.py
     - utils.py
   stream_experiment:
-    cmd: python HD_stream.py
+    cmd: streamlit run HD_stream.py
     deps:
     - best_model_params.json
-    - experiment_hyper.py
+    - HD_stream.py
     - utils.py

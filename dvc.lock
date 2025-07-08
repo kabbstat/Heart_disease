@@ -1,0 +1,72 @@
+schema: '2.0'
+stages:
+  experiment:
+    cmd: python experiment.py
+    deps:
+    - path: experiment.py
+      hash: md5
+      md5: d6ef333aaf4fd9f474ca7d498c09e280
+      size: 2137
+    - path: utils.py
+      hash: md5
+      md5: 9bedc3f6313a071faa73975ca846037b
+      size: 1420
+    outs:
+    - path: best_model.txt
+      hash: md5
+      md5: 6c9b5576a1fdfaccea4e06393e36e730
+      size: 18
+  experiment_hyper:
+    cmd: python experiment_hyper.py
+    deps:
+    - path: best_model.txt
+      hash: md5
+      md5: 6c9b5576a1fdfaccea4e06393e36e730
+      size: 18
+    - path: experiment.py
+      hash: md5
+      md5: d6ef333aaf4fd9f474ca7d498c09e280
+      size: 2137
+    - path: experiment_hyper.py
+      hash: md5
+      md5: 8f3b67728bfef6a966194dfecaa4d042
+      size: 1807
+    - path: utils.py
+      hash: md5
+      md5: 9bedc3f6313a071faa73975ca846037b
+      size: 1420
+    outs:
+    - path: best_model_params.json
+      hash: md5
+      md5: b19bf6ceb30b49e3f9a426a0ab31c745
+      size: 60
+  model_eval:
+    cmd: python model_eval.py
+    deps:
+    - path: best_model_params.json
+      hash: md5
+      md5: b19bf6ceb30b49e3f9a426a0ab31c745
+      size: 60
+    - path: experiment_hyper.py
+      hash: md5
+      md5: 8f3b67728bfef6a966194dfecaa4d042
+      size: 1807
+    - path: utils.py
+      hash: md5
+      md5: 9bedc3f6313a071faa73975ca846037b
+      size: 1420
+  stream_experiment:
+    cmd: python HD_stream.py
+    deps:
+    - path: best_model_params.json
+      hash: md5
+      md5: b19bf6ceb30b49e3f9a426a0ab31c745
+      size: 60
+    - path: experiment_hyper.py
+      hash: md5
+      md5: 8f3b67728bfef6a966194dfecaa4d042
+      size: 1807
+    - path: utils.py
+      hash: md5
+      md5: 9bedc3f6313a071faa73975ca846037b
+      size: 1420
