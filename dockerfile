@@ -17,3 +17,5 @@ RUN pip install --no-cache-dir \
 
 # Exposer le port utilisé par Streamlit
 CMD ["streamlit", "run", "HD_stream.py"]
+
+

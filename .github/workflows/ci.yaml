@@ -1,0 +1,43 @@
+name: CI
+on:
+  push:
+    branches: [master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - name: checkout code
+       uses: actions/checkout@v3
+     - name: Set up pyhthon
+       uses: actions/setup-python@v3
+       with:
+          python-version: '3.8'
+     - name: cache pip independencies
+       uses: actions/cache@v3
+       with:
+         path: ~/.cache/pip
+         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+         restore-keys: |
+            ${{runner.os}}-pip-
+     - name: Install dependecies
+       run: |
+          python -m pip install --upgrade pip
+          pip intsall -r requirements.txt
+          pip install dvc[all] mlflow
+     - name: Pull data artifacts with DVC
+       run: |
+            dvc pull
+     - name: Reproduce DVC pipeline
+       run : |
+          dvc repro
+     - name: Run mlflow experiments
+       run: |
+          mlflow run . --no-conda
+     - name: Archive model output
+       uses: actions/upload-artifact@v3
+       with:
+         name: ml-model-outputs
+         path : |
+            best_model_params.json
+            best_model.txt
+       
