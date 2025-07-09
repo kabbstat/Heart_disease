@@ -3,9 +3,11 @@ import mlflow
 import mlflow.sklearn
 from utils import load_data, get_model_class, load_params, load_best_model, save_best_params
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
+import os
  
-
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
+mlflow.set_tracking_uri(tracking_uri)
+#mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.set_experiment("hyper_parameter")
 
 

@@ -23,7 +23,7 @@ jobs:
        uses: actions/cache@v3
        with:
          path: .dvc/cache
-         key: ${{runner.oss}}-dvc-${{hashfiles('**/.dvc/config')}}
+         key: ${{runner.os}}-dvc-${{hashfiles('**/.dvc/config')}}
          restore-keys: |
             ${{runner.os}}-dvc-
      - name: Install dependencies
@@ -31,16 +31,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install "dvc[all]" mlflow
-#     - name: Pull data artifacts with DVC
-#       run: |
-#            dvc pull --quiet
+     - name: Pull data artifacts with DVC
+       run: |
+            dvc pull --quiet
+
+     - name: Start MLflow server
+       run: | 
+              mlflow server --backend-store-uri file://$PWD/mlruns \
+                 --default-artifact-root file://$PWD/mlruns \
+                 --host 0.0.0.0 --port 5000 &
+              sleep 5  
      - name: Reproduce DVC pipeline
        run : |
-          dvc repro --quiet
-     - name: Run mlflow experiments
-       run: |
           export MLFLOW_TRACKING_URI=http://localhost:5000
-          mlflow run . --no-conda --quiet
+          dvc repro --quiet
      - name: Upload model output
        uses: actions/upload-artifact@v4
        with:

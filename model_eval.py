@@ -8,11 +8,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt 
 import seaborn as sns
-import json
+import os
 from utils import load_data, get_model_class, load_params, load_best_model, load_best_params, split_data
 
+tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
+mlflow.set_tracking_uri(tracking_uri)
 
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+#mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.set_experiment("model_eval")
 def plot_confusion_matrix(y_true, y_pred, model_name):
     """Crée et sauvegarde la matrice de confusion"""
