@@ -1,183 +1,167 @@
-# Projet de Prédiction des Maladies Cardiaques
+Projet de Prédiction des Maladies Cardiaques
+Date: 09 juillet 2025
 
-Ce projet implémente un pipeline complet de machine learning pour prédire les maladies cardiaques en utilisant des données médicales. Il comprend l'expérimentation de modèles, l'optimisation d'hyperparamètres, l'évaluation et une interface utilisateur interactive.
+🎯 Introduction
+Ce projet implémente un pipeline complet de machine learning pour prédire les maladies cardiaques à partir de données médicales. Il inclut l'expérimentation de modèles, l'optimisation des hyperparamètres, l'évaluation des performances et une interface utilisateur interactive avec Streamlit. L'objectif est d'offrir un outil d'aide à la décision pour les professionnels de santé, avec une précision élevée et une interprétabilité des résultats.
 
-## 🏗️ Architecture du Projet
-
-```
+📂 Architecture du Projet
 heart-disease-prediction/
-├── utils.py                    # Fonctions utilitaires
-├── experiment.py              # Expérimentation des modèles
-├── experiment_hyper.py        # Optimisation des hyperparamètres
-├── model_eval.py              # Évaluation finale du modèle
-├── HD_stream.py               # Interface Streamlit
-├── params.yaml                # Configuration des paramètres
-├── requirements.txt           # Dépendances Python
-├── heart-disease.csv          # Dataset (à ajouter)
-└── README.md                  # Documentation
-```
+├── data/                       # Données (heart-disease.csv)
+├── src/                        # Code source
+│   ├── utils.py                # Fonctions utilitaires
+│   ├── experiment.py           # Expérimentation des modèles
+│   ├── experiment_hyper.py     # Optimisation des hyperparamètres
+│   ├── model_eval.py           # Évaluation finale du modèle
+│   ├── HD_stream.py            # Interface Streamlit
+├── params.yaml                 # Configuration des paramètres
+├── dvc.yaml                    # Configuration DVC pour le pipeline
+├── requirements.txt            # Dépendances Python
+└── README.md                   # Documentation
 
-## 📊 Pipeline ML
 
-### 1. **utils.py** - Fonctions Utilitaires
-- Chargement et division des données
-- Gestion des paramètres YAML
-- Sauvegarde/chargement des résultats
-- Instanciation dynamique des modèles
+📊 Dataset
+Le dataset, issu du UCI Machine Learning Repository, contient 303 entrées avec 14 attributs médicaux :
 
-### 2. **experiment.py** - Expérimentation des Modèles
-- Test de 5 modèles différents avec validation croisée
-- Tracking MLflow pour tous les modèles
-- Sélection automatique du meilleur modèle
-- Sauvegarde du meilleur modèle dans `best_model.txt`
+age : Âge du patient
+sex : Sexe (0 = Femme, 1 = Homme)
+cp : Type de douleur thoracique (0-3)
+trestbps : Pression artérielle au repos (mm Hg)
+chol : Cholestérol sérique (mg/dl)
+fbs : Glycémie à jeun > 120 mg/dl (1 = Vrai, 0 = Faux)
+restecg : Résultats ECG au repos (0-2)
+thalach : Fréquence cardiaque maximale
+exang : Angine induite par l’exercice (0 = Non, 1 = Oui)
+oldpeak : Dépression ST
+slope : Pente du segment ST (0-2)
+ca : Nombre de vaisseaux principaux (0-4)
+thal : Thalassémie (0-3)
+target : Variable cible (0 = Pas de maladie, 1 = Maladie)
 
-### 3. **experiment_hyper.py** - Optimisation des Hyperparamètres
-- Grid Search sur le meilleur modèle identifié
-- Validation croisée stratifiée
-- Tracking MLflow des hyperparamètres
-- Sauvegarde des meilleurs paramètres en JSON
+Prétraitement : Nettoyage des données, gestion des valeurs manquantes, et encodage des variables catégoriques.
 
-### 4. **model_eval.py** - Évaluation Finale
-- Évaluation complète du modèle optimisé
-- Métriques détaillées (accuracy, precision, recall, F1, AUC)
-- Visualisations (matrice de confusion, courbe ROC)
-- Validation croisée sur l'ensemble complet
+🧠 Pipeline ML
+1. utils.py - Fonctions Utilitaires
 
-### 5. **HD_stream.py** - Interface Utilisateur
-- Exploration des données (EDA)
-- Visualisations interactives
-- Test de modèles en temps réel
-- Prédiction personnalisée
-- Interface utilisateur intuitive
+Chargement et prétraitement des données
+Gestion des paramètres via params.yaml
+Sauvegarde/chargement des modèles et résultats
 
-## 🚀 Installation et Utilisation
+2. experiment.py - Expérimentation
 
-### Prérequis
-```bash
+Test de 5 modèles : Random Forest, Gradient Boosting, HistGradientBoosting, SVM, Logistic Regression
+Validation croisée et suivi via MLflow
+Sélection du meilleur modèle (enregistré dans best_model.txt)
+
+3. experiment_hyper.py - Optimisation
+
+Grid Search pour optimiser les hyperparamètres du meilleur modèle
+Validation croisée stratifiée
+Sauvegarde des paramètres optimisés en JSON
+
+4. model_eval.py - Évaluation
+
+Évaluation du modèle optimisé avec métriques (accuracy, precision, recall, F1, AUC)
+Visualisations : matrice de confusion, courbe ROC
+Validation croisée sur l’ensemble complet
+
+5. HD_stream.py - Interface Streamlit
+
+Exploration des données (EDA) avec statistiques et visualisations
+Test interactif des modèles
+Prédiction personnalisée avec probabilité et évaluation du risque
+
+
+📈 Suivi avec MLflow
+MLflow est utilisé pour :
+
+Suivi des expériences, paramètres et métriques
+Comparaison des performances des modèles
+Enregistrement des artefacts (modèles, graphiques)
+Gestion des versions
+
+Accès : http://127.0.0.1:5000 après lancement du serveur MLflow.
+
+🔮 Prédiction Personnalisée
+L’interface Streamlit permet :
+
+Saisie : Formulaire pour entrer les 13 attributs cliniques
+Prédiction : Probabilité de maladie cardiaque (ex. : "73% de risque")
+Visualisation : Indicateur de risque (>50% = élevé) avec retour visuel
+EDA : Statistiques, histogrammes, matrice de corrélation
+
+
+🚀 Installation et Utilisation
+Prérequis
+
+Python 3.8+
+DVC pour la gestion du pipeline
+MLflow pour le suivi des expériences
+
+Étapes
+
+Cloner le dépôt :
+git clone https://github.com/votre-utilisateur/heart-disease-prediction.git
+cd heart-disease-prediction
+
+
+Installer les dépendances :
 pip install -r requirements.txt
-```
 
-### Démarrage de MLflow
-```bash
+
+Initialiser DVC :
+dvc init
+dvc pull
+
+
+Lancer le serveur MLflow :
 mlflow server --host 127.0.0.1 --port 5000
-```
 
-### Exécution du Pipeline
 
-1. **Expérimentation des modèles**:
-```bash
-python experiment.py
-```
+Exécuter le pipeline 
+dvc repro
 
-2. **Optimisation des hyperparamètres**:
-```bash
-python experiment_hyper.py
-```
 
-3. **Évaluation finale**:
-```bash
-python model_eval.py
-```
+Lancer l’interface Streamlit :
+streamlit run src/HD_stream.py
 
-4. **Interface utilisateur**:
-```bash
-streamlit run HD_stream.py
-```
 
-## 📋 Dataset
 
-Le dataset `heart-disease.csv` doit contenir les colonnes suivantes:
-- `age`: Âge du patient
-- `sex`: Sexe (0=Femme, 1=Homme)
-- `cp`: Type de douleur thoracique (0-3)
-- `trestbps`: Pression artérielle au repos
-- `chol`: Cholestérol sérique
-- `fbs`: Glycémie à jeun > 120 mg/dl
-- `restecg`: Résultats ECG au repos
-- `thalach`: Fréquence cardiaque maximale
-- `exang`: Angine induite par l'exercice
-- `oldpeak`: Dépression ST
-- `slope`: Pente du segment ST
-- `ca`: Nombre de vaisseaux principaux
-- `thal`: Thalassémie
-- `target`: Variable cible (0=Pas de maladie, 1=Maladie)
 
-## 🔧 Configuration
+📝 Exemple d’Utilisation
 
-### Modèles Testés
-- **RandomForest**: Forêt aléatoire
-- **GradientBoosting**: Gradient boosting
-- **HistGradientBoosting**: Gradient boosting histogramme
-- **SVM**: Support Vector Machine
-- **LogisticRegression**: Régression logistique
+Exécutez dvc repro pour entraîner et évaluer les modèles.
+Lancez Streamlit avec streamlit run src/HD_stream.py.
+Entrez des valeurs cliniques (ex. : âge = 55, sexe = 1, chol = 240).
+Obtenez une prédiction (ex. : "73% de risque") et visualisez le niveau de risque.
 
-### Hyperparamètres Optimisés
-Chaque modèle a sa propre grille de paramètres définie dans `params.yaml`.
 
-## 📈 Tracking MLflow
+⚠️ Avertissements
 
-Le projet utilise MLflow pour:
-- Suivre les expériences et leurs paramètres
-- Comparer les performances des modèles
-- Enregistrer les artefacts (modèles, graphiques)
-- Gérer les versions des modèles
+Usage éducatif : Ce projet ne remplace pas un diagnostic médical.
+Interprétation : Les prédictions doivent être validées par un professionnel de santé.
 
-Interface accessible sur: http://127.0.0.1:5000
 
-## 🎯 Fonctionnalités de l'Interface
+🔧 Améliorations Apportées
 
-### Exploration des Données
-- Statistiques descriptives
-- Informations sur les types de données
-- Distribution des variables
+Pipeline DVC : Automatisation du workflow ML.
+Code modulaire : Séparation des responsabilités pour une meilleure maintenabilité.
+Interface utilisateur : Visualisations interactives et recommandations contextuelles.
+Documentation : Instructions claires et complètes.
 
-### Visualisations
-- Histogrammes des variables numériques
-- Graphiques de comptage pour les variables catégoriques
-- Matrice de corrélation
-- Analyse bivariée avec la variable cible
 
-### Modélisation
-- Test interactif de différents modèles
-- Affichage des performances
-- Analyse détaillée pour la régression logistique
-- Tests statistiques (Khi-deux)
+🔮 Perspectives
 
-### Prédiction Personnalisée
-- Formulaire de saisie des paramètres patient
-- Prédiction en temps réel
-- Visualisation du risque
-- Recommandations basées sur le niveau de risque
+Intégrer des modèles plus avancés (ex. : réseaux neuronaux).
+Ajouter des visualisations avancées (ex. : SHAP pour l’interprétabilité).
+Déployer l’application sur un serveur cloud.
 
-## ⚠️ Avertissements
 
-- Cette application est à des fins éducatives uniquement
-- Ne remplace pas un avis médical professionnel
-- Les prédictions doivent être interprétées par un professionnel de santé
+👤 Auteur
+KABBAJ MOHAMED  
 
-## 🛠️ Améliorations Apportées
+Développé avec Streamlit, Scikit-learn, MLflow et DVC.  
+Contact : votre-email@example.com
 
-### Corrections Techniques
-- Gestion des erreurs et exceptions
-- Validation des fichiers requis
-- Optimisation des performances
-- Code plus lisible et maintenable
 
-### Améliorations Fonctionnelles
-- Interface utilisateur améliorée
-- Visualisations plus riches
-- Métriques d'évaluation complètes
-- Recommandations médicales contextuelles
-
-### Bonnes Pratiques
-- Séparation des responsabilités
-- Configuration externalisée
-- Documentation complète
-- Gestion des versions
-
-## 👤 Auteur
-
-**KABBAJ MOHAMED**
-- Développé avec Streamlit, Scikit-learn et MLflow
-- Pipeline ML complet pour la prédiction des maladies cardiaques
-
+📄 Licence
+Sous licence MIT. Voir LICENSE.

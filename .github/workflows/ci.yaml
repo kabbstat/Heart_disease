@@ -43,7 +43,7 @@ jobs:
      - name: Start MLflow server
        run: | 
           mlflow server --host 0.0.0.0 --port 5000 &
-          until curl -s http://localhost:5000/api/2.0/mlflow/experiments/get-by-name?experiment_name=mon_experiment; do 
+          until curl -s http://localhost:5000; do 
             sleep 1 
           done
      - name: Reproduce DVC pipeline

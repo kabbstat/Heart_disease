@@ -5,8 +5,8 @@ stages:
     deps:
     - path: experiment.py
       hash: md5
-      md5: d6ef333aaf4fd9f474ca7d498c09e280
-      size: 2137
+      md5: cf5fe1cb1be22c6e23f4a41623ee544e
+      size: 2293
     - path: utils.py
       hash: md5
       md5: 9bedc3f6313a071faa73975ca846037b
@@ -14,23 +14,23 @@ stages:
     outs:
     - path: best_model.txt
       hash: md5
-      md5: 6c9b5576a1fdfaccea4e06393e36e730
-      size: 18
+      md5: 64398621cb6430a805f701da7d595cdd
+      size: 12
   experiment_hyper:
     cmd: python experiment_hyper.py
     deps:
     - path: best_model.txt
       hash: md5
-      md5: 6c9b5576a1fdfaccea4e06393e36e730
-      size: 18
+      md5: 64398621cb6430a805f701da7d595cdd
+      size: 12
     - path: experiment.py
       hash: md5
-      md5: d6ef333aaf4fd9f474ca7d498c09e280
-      size: 2137
+      md5: cf5fe1cb1be22c6e23f4a41623ee544e
+      size: 2293
     - path: experiment_hyper.py
       hash: md5
-      md5: 8f3b67728bfef6a966194dfecaa4d042
-      size: 1807
+      md5: f6b31ead64a33cb2228504b2e8ef4f2c
+      size: 1931
     - path: utils.py
       hash: md5
       md5: 9bedc3f6313a071faa73975ca846037b
@@ -38,19 +38,19 @@ stages:
     outs:
     - path: best_model_params.json
       hash: md5
-      md5: b19bf6ceb30b49e3f9a426a0ab31c745
-      size: 60
+      md5: 5e7845cdb68ab50bb51d799edd205d39
+      size: 47
   model_eval:
     cmd: python model_eval.py
     deps:
     - path: best_model_params.json
       hash: md5
-      md5: b19bf6ceb30b49e3f9a426a0ab31c745
-      size: 60
+      md5: 5e7845cdb68ab50bb51d799edd205d39
+      size: 47
     - path: experiment_hyper.py
       hash: md5
-      md5: 8f3b67728bfef6a966194dfecaa4d042
-      size: 1807
+      md5: f6b31ead64a33cb2228504b2e8ef4f2c
+      size: 1931
     - path: utils.py
       hash: md5
       md5: 9bedc3f6313a071faa73975ca846037b

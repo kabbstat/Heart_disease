@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/842290492357857298/416eeced7d42436eb3c22bf7a8be05d5/artifacts
+end_time: 1752068054141
+entry_point_name: ''
+experiment_id: '842290492357857298'
+lifecycle_stage: active
+run_id: 416eeced7d42436eb3c22bf7a8be05d5
+run_name: Hyperparameter of RandomForest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1752068049908
+status: 3
+tags: []
+user_id: pc
