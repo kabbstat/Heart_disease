@@ -6,24 +6,10 @@ import mlflow.sklearn
 import os
 import time
 import requests
-def wait_for_mlflow_server(uri, max_retries=5):
-    """Attendre que le serveur MLflow soit prêt"""
-    for i in range(max_retries):
-        try:
-            response = requests.get(f"{uri}/health", timeout=5)
-            if response.status_code == 200:
-                print(f"Serveur MLflow prêt à {uri}")
-                return True
-        except requests.exceptions.RequestException:
-            pass
-        
-        print(f"Tentative {i+1}/{max_retries} - Attente du serveur MLflow...")
-        time.sleep(2)
-    
-    return False
-tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
-mlflow.set_tracking_uri(tracking_uri)
-#mlflow.set_tracking_uri("http://127.0.0.1:5000")
+
+#tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
+#mlflow.set_tracking_uri(tracking_uri)
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.set_experiment("1er_experimentation")
 
 def main():

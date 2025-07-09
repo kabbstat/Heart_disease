@@ -5,6 +5,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      mlflow:
+        image: ghcr.io/mlflow/mlflow:latest
+        ports:
+          - 5000:5000
     steps:
      - name: checkout code
        uses: actions/checkout@v3
@@ -37,32 +42,14 @@ jobs:
 
      - name: Start MLflow server
        run: | 
-              # Démarrer MLflow en arrière-plan
-              mlflow server --backend-store-uri file://$PWD/mlruns \
-                 --default-artifact-root file://$PWD/mlruns \
-                 --host 0.0.0.0 --port 5000 &
-              
-              # Attendre que le serveur soit prêt
-              echo "Attente du démarrage du serveur MLflow..."
-              for i in {1..5}; do
-                if curl -s http://localhost:5000/health > /dev/null 2>&1; then
-                  echo "Serveur MLflow prêt!"
-                  break
-                fi
-                echo "Tentative $i/5..."
-                sleep 2
-              done
-              
-              # Vérifier si le serveur est vraiment prêt
-              if ! curl -s http://localhost:5000/health > /dev/null 2>&1; then
-                echo "Erreur: Le serveur MLflow n'a pas démarré correctement"
-                exit 1
-              fi
+          mlflow server --host 0.0.0.0 --port 5000 &
+          until curl -s http://localhost:5000/api/2.0/mlflow/experiments/get-by-name?experiment_name=mon_experiment; do 
+            sleep 1 
+          done
      - name: Reproduce DVC pipeline
        run : |
           export MLFLOW_TRACKING_URI=http://localhost:5000
-           python -c "import mlflow; mlflow.set_tracking_uri('http://localhost:5000'); print('MLflow connecté avec succès')"
-          dvc repro --quiet
+          dvc repro 
      - name: Upload model output
        uses: actions/upload-artifact@v4
        with:
