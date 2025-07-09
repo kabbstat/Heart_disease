@@ -19,21 +19,28 @@ jobs:
          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
          restore-keys: |
             ${{runner.os}}-pip-
-     - name: Install dependecies
+     - name: Cache DVC
+       uses: actions/cache@v3
+       with:
+         path: .dvc/cache
+         key: ${{runner.oss}}-dvc-${{hashfiles('**/.dvc/config')}}
+         restore-keys: |
+            ${{runner.os}}-dvc-
+     - name: Install dependencies
        run: |
           python -m pip install --upgrade pip
           pip intsall -r requirements.txt
-          pip install dvc[all] mlflow
+          pip install "dvc[all]" mlflow
      - name: Pull data artifacts with DVC
        run: |
-            dvc pull
+            dvc pull --quiet
      - name: Reproduce DVC pipeline
        run : |
-          dvc repro
+          dvc repro --quiet
      - name: Run mlflow experiments
        run: |
-          mlflow run . --no-conda
-     - name: Archive model output
+          mlflow run . --no-conda --quiet
+     - name: Upload model output
        uses: actions/upload-artifact@v3
        with:
          name: ml-model-outputs

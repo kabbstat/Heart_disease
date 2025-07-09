@@ -1,2 +1,6 @@
+[core]
+    remote = hd_remote
 ['remote "myremote"']
     url = C:\Users\HP\AppData\Local\Temp
+['remote "hd_remote"']
+    url = C:\Users\pc\AppData\Local\Temp

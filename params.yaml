@@ -36,6 +36,6 @@ experiment_hyper:
       C: [0.1, 1, 10]
       kernel: ['linear', 'rbf']
     LogisticRegression:  
-      C: [0.01, 0.1, 1, 10, 100]
+      C: [0.01, 0.1, 1, 10, 20, 100]
       solver: ['liblinear', 'lbfgs']
       penalty: ['l1', 'l2']
