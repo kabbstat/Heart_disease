@@ -39,6 +39,7 @@ jobs:
           dvc repro --quiet
      - name: Run mlflow experiments
        run: |
+          export MLFLOW_TRACKING_URI=$(pwd)/mlruns
           mlflow run . --no-conda --quiet
      - name: Upload model output
        uses: actions/upload-artifact@v4
