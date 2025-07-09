@@ -163,6 +163,16 @@ elif section == "Modélisation":
     st.write(f"Données de test : {X_test.shape}")
     st.write(f"Étiquettes d'entraînement : {y_train.shape}")
     st.write(f"Étiquettes de test : {y_test.shape}")
+    # Test du Khi-deux pour les variables catégoriques
+    st.subheader("Test du Khi-deux")
+    categorical_vars = ['sex', 'cp', 'slope', 'thal']
+    for var in categorical_vars:
+        chi2_stat, p_value = chi2_test(var, df)
+        st.write(f"**{var}** : Statistique = {chi2_stat:.4f}, p-value = {p_value:.4f}")
+        if p_value < 0.05:
+            st.write(f"{var} est significativement associée aux maladies cardiaques.")
+        else:
+            st.write(f"Aucune association significative entre {var} et les maladies cardiaques.")
     st.subheader("Experimentation avec mlflow")
     params = load_params()
     best_model_name = load_best_model()
@@ -172,18 +182,18 @@ elif section == "Modélisation":
         model = model_class(**best_params)
     else:
         model = model_class(**params["experiment"]["models"][best_model_name].get("params",{}))
-    st.write(f"le meilleure model est {best_model_name}")
-    st.write(f"best hyperparemeter pour ce modele avec un grid_search est {best_params}")
+    st.write(f"L'experimentation avec mlflow a reveler que {best_model_name} est le meilleure modele ")
+    st.write(f"best hyperparameter pour ce modele avec un grid_search est {best_params}")
     # Sélection du modèle
-    model_options = ["Forêt Aléatoire", "Régression Logistique", "Réseau de Neurones", "Arbre de Décision", "SVM"]
-    selected_model = st.selectbox("Choisir un modèle", model_options)
+    #model_options = ["Forêt Aléatoire", "Régression Logistique", "Réseau de Neurones", "Arbre de Décision", "SVM"]
+    #selected_model = st.selectbox("Choisir un modèle", model_options)
 
     # Évaluation du modèle sélectionné
-    if st.button("Évaluer le modèle"):
-        with st.spinner(f"Evaluation du modéle {selected_model}"):
+    if st.button(f"Évaluer le modèle {best_model_name}"):
+        with st.spinner(f"Evaluation du modéle {best_model_name}"):
             try:
-                accuracy, report, trained_model = evaluate_model(model, X_train, X_test, y_train, y_test, selected_model)
-                st.subheader(f"Résultats pour {selected_model}")
+                accuracy, report, trained_model = evaluate_model(model, X_train, X_test, y_train, y_test, best_model_name)
+                st.subheader(f"Résultats pour {best_model_name}")
                 col1, col2, col3 = st.columns([1,2,1])
                 with col1:
                     st.metric("precision", f"{accuracy:.4f}")
@@ -196,9 +206,9 @@ elif section == "Modélisation":
                 st.dataframe(report_df.round(4))
 
         # Résultats détaillés pour la régression logistique
-                if selected_model == "Régression Logistique":
-                    st.subheader("Analyse détaillée de la régression logistique")
-                    try:
+                
+                st.subheader("Analyse détaillée de la régression logistique")
+                try:
                         X_train_sm = sm.add_constant(X_train)
                         logit_model = sm.Logit(y_train, X_train_sm)
                         result = logit_model.fit()
@@ -212,20 +222,11 @@ elif section == "Modélisation":
                         st.write(pd.DataFrame(odds_ratios, columns=["Odds Ratio"]))
                         st.write("**Intervalles de confiance des Odds Ratios** :")
                         st.write(conf_int)
-                    except Exception as e:
+                except Exception as e:
                          st.error(f"Erreur lors de l'analyse détaillée {e}")
             except Exception as e:
                 st.error(f"error lors de l'évaluation: {e}")
-    # Test du Khi-deux pour les variables catégoriques
-    st.subheader("Test du Khi-deux")
-    categorical_vars = ['sex', 'cp', 'slope', 'thal']
-    for var in categorical_vars:
-        chi2_stat, p_value = chi2_test(var, df)
-        st.write(f"**{var}** : Statistique = {chi2_stat:.4f}, p-value = {p_value:.4f}")
-        if p_value < 0.05:
-            st.write(f"{var} est significativement associée aux maladies cardiaques.")
-        else:
-            st.write(f"Aucune association significative entre {var} et les maladies cardiaques.")
+
 
 # Prédiction personnalisé
 elif section == "Prédiction personnalisé":
