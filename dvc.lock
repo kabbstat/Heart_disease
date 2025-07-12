@@ -5,8 +5,8 @@ stages:
     deps:
     - path: experiment.py
       hash: md5
-      md5: d6ef333aaf4fd9f474ca7d498c09e280
-      size: 2137
+      md5: cf5fe1cb1be22c6e23f4a41623ee544e
+      size: 2293
     - path: params.yaml
       hash: md5
       md5: 2842b4d42160b37db8e704f4a2e5ebf8
@@ -29,12 +29,12 @@ stages:
       size: 18
     - path: experiment.py
       hash: md5
-      md5: d6ef333aaf4fd9f474ca7d498c09e280
-      size: 2137
+      md5: cf5fe1cb1be22c6e23f4a41623ee544e
+      size: 2293
     - path: experiment_hyper.py
       hash: md5
-      md5: 8f3b67728bfef6a966194dfecaa4d042
-      size: 1807
+      md5: f6b31ead64a33cb2228504b2e8ef4f2c
+      size: 1931
     - path: params.yaml
       hash: md5
       md5: 2842b4d42160b37db8e704f4a2e5ebf8
@@ -57,8 +57,8 @@ stages:
       size: 58
     - path: experiment_hyper.py
       hash: md5
-      md5: 8f3b67728bfef6a966194dfecaa4d042
-      size: 1807
+      md5: f6b31ead64a33cb2228504b2e8ef4f2c
+      size: 1931
     - path: utils.py
       hash: md5
       md5: 9bedc3f6313a071faa73975ca846037b

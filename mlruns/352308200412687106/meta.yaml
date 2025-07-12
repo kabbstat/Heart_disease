@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/352308200412687106
+creation_time: 1752343740340
+experiment_id: '352308200412687106'
+last_update_time: 1752343740340
+lifecycle_stage: active
+name: hyper_parameter
