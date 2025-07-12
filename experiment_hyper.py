@@ -7,6 +7,7 @@ import os
  
 #tracking_uri = os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
 #mlflow.set_tracking_uri(tracking_uri)
+mlflow.set_tracking_uri("file:///tmp/mlruns")
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.set_experiment("hyper_parameter")
 
