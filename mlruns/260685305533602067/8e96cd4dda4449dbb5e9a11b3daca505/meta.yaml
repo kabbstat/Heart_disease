@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/260685305533602067/8e96cd4dda4449dbb5e9a11b3daca505/artifacts
+end_time: 1751899459325
+entry_point_name: ''
+experiment_id: '260685305533602067'
+lifecycle_stage: active
+run_id: 8e96cd4dda4449dbb5e9a11b3daca505
+run_name: experimentation pour classification
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751899438886
+status: 3
+tags: []
+user_id: pc

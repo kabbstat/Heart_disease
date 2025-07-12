@@ -1,0 +1,10 @@
+artifact_location: mlflow-artifacts:/260685305533602067/models/m-bfc08c9549664bb9b11afd439df79828/artifacts
+creation_timestamp: 1752068031225
+experiment_id: '260685305533602067'
+last_updated_timestamp: 1752068034213
+model_id: m-bfc08c9549664bb9b11afd439df79828
+model_type: ''
+name: HistGradientBoosting
+source_run_id: c7c584da7e9e4500834a4d3956db7209
+status: 2
+status_message: null

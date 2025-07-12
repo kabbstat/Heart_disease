@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/260685305533602067/a6afa3107a2540d8b7c56e250ef6a039/artifacts
+end_time: 1751899453146
+entry_point_name: ''
+experiment_id: '260685305533602067'
+lifecycle_stage: active
+run_id: a6afa3107a2540d8b7c56e250ef6a039
+run_name: experimentation de HistGradientBoosting
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751899449136
+status: 3
+tags: []
+user_id: pc

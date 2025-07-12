@@ -1,9 +1,7 @@
-
 name: CI
 on:
   push:
-    branches:
-       - master
+    branches: [master]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,8 +9,6 @@ jobs:
     steps:
     - name: checkout code
       uses: actions/checkout@v3
-      with:
-       fetch-depth: 0
     - name: setup python
       uses: actions/setup-python@v3
       with:
@@ -37,11 +33,5 @@ jobs:
        context: .
        file: Dockerfile
        tags: my-ml-pipeline:latest 
-    - name: Run docker image
-      run: |
-           docker run -d \
-            -p 8080:8080 \
-            -v $(pwd)/data:/app/data \
-            -v $(pwd)/models:/app/models \
-            my-ml-pipeline
+
        

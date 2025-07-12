@@ -28,5 +28,5 @@ stages:
     cmd: streamlit run HD_stream.py
     deps:
     - best_model_params.json
-    - experiment_hyper.py
+    - HD_stream.py
     - utils.py
