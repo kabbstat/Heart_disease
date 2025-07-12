@@ -1,6 +1,6 @@
 
 experiment:
-  cv: 5
+  cv: 8
   models:
     RandomForest:
       class: ensemble.RandomForestClassifier
@@ -21,7 +21,7 @@ experiment:
         max_iter: 100
 
 experiment_hyper:
-  cv: 5
+  cv: 8
   param_grid:
     RandomForest:
       n_estimators: [50, 100, 200, 300]
@@ -36,6 +36,6 @@ experiment_hyper:
       C: [0.1, 1, 10]
       kernel: ['linear', 'rbf']
     LogisticRegression:  
-      C: [0.01, 0.1, 1, 10, 100]
+      C: [0.01, 0.1, 1, 10, 20, 100]
       solver: ['liblinear', 'lbfgs']
       penalty: ['l1', 'l2']

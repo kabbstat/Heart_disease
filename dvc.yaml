@@ -3,6 +3,7 @@ stages:
     cmd: python experiment.py
     deps:
     - experiment.py
+    - params.yaml
     - utils.py
     outs:
     - best_model.txt
@@ -11,6 +12,7 @@ stages:
     deps:
     - best_model.txt
     - experiment.py
+    - params.yaml
     - experiment_hyper.py
     - utils.py
     outs:
