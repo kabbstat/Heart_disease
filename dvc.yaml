@@ -30,3 +30,4 @@ stages:
     - best_model_params.json
     - HD_stream.py
     - utils.py
+  frozen: true
