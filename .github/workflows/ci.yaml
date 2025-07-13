@@ -32,9 +32,9 @@ jobs:
       with:
        context: .
        file: Dockerfile
-       tags: ${{ secrets.DOCKER_USERNAME }} / my-ml-pipeline:latest 
+       tags: ${{ secrets.DOCKER_USERNAME }}/my-ml-pipeline:latest 
     - name: Save Docker image as tar
-      run: docker save -o my-ml-pipeline-image.tar ${{ secrets.DOCKER_USERNAME }} / my-ml-pipeline:latest 
+      run: docker save -o my-ml-pipeline-image.tar ${{ secrets.DOCKER_USERNAME }}/my-ml-pipeline:latest 
     - name: Upload Docker image artifact
       uses: actions/upload-artifact@v4
       with:
