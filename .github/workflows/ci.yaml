@@ -36,7 +36,7 @@ jobs:
     - name: Save Docker image as tar
       run: docker save -o my-ml-pipeline-image.tar ${{ secrets.DOCKER_USERNAME }} /my-ml-pipeline:latest 
     - name: Upload Docker image artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: my-ml-pipeline-image
         path: my-ml-pipeline-image.tar
