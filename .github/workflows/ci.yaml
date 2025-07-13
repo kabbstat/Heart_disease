@@ -2,44 +2,46 @@ name: CI
 on:
   push:
     branches: [master]
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: checkout code
+    - name: Checkout code
       uses: actions/checkout@v3
-    - name: setup python
+
+    - name: Set up Python
       uses: actions/setup-python@v3
       with:
         python-version: '3.9'
-    - name: cache pip
+
+    - name: Cache pip
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: ${{runner.os}}-pip-${{hashFiles('requirements.txt')}}
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
         restore-keys: |
-            ${{runner.os}}-pip-
-    - name: install dependencies
-      run: | 
-        pip install -r 'requirements.txt'
-    - name: RUN DVC PIPELINE
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run DVC pipeline
       run: dvc repro
-  #  - name: Build docker image
-  #    run: docker build -t my-ml-pipeline . 
+
     - name: Build Docker image
       uses: docker/build-push-action@v6
       with:
-       context: .
-       file: Dockerfile
-       tags: ${{ secrets.DOCKER_USERNAME }}/my-ml-pipeline:latest 
+        context: .
+        file: Dockerfile
+        tags: ${{ secrets.DOCKER_USERNAME }}/my-ml-pipeline:latest
+
     - name: Save Docker image as tar
-      run: docker save -o my-ml-pipeline-image.tar ${{ secrets.DOCKER_USERNAME }}/my-ml-pipeline:latest 
+      run: docker save -o my-ml-pipeline-image.tar ${{ secrets.DOCKER_USERNAME }}/my-ml-pipeline:latest
+
     - name: Upload Docker image artifact
       uses: actions/upload-artifact@v4
       with:
         name: my-ml-pipeline-image
         path: my-ml-pipeline-image.tar
-
-
-       
