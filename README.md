@@ -268,7 +268,7 @@ Accédez à http://localhost:8080
 
 ### Option 2 : Installation Locale
 ```bash
-git clone <votre-repo>
+git clone https://github.com/kabbstat/Heart_disease.git
 cd heart-disease-prediction
 pip install -r requirements.txt
 streamlit run HD_stream.py
@@ -276,7 +276,7 @@ streamlit run HD_stream.py
 
 ### Option 3 : Développement
 ```bash
-git clone <votre-repo>
+git clone https://github.com/kabbstat/Heart_disease.git
 cd heart-disease-prediction
 pip install -r requirements.txt
 mlflow server --host 127.0.0.1 --port 5000
