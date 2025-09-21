@@ -1,6 +1,6 @@
 # Projet de Prédiction des Maladies Cardiaques
 
-Ce projet implémente un pipeline complet de machine learning pour prédire les maladies cardiaques en utilisant des données médicales. Il comprend l'expérimentation de modèles, l'optimisation d'hyperparamètres, l'évaluation et une interface utilisateur interactive.
+Ce projet implémente un pipeline complet de machine learning pour prédire les maladies cardiaques en utilisant des données médicales. Il comprend l'expérimentation de modèles, l'optimisation d'hyperparamètres, l'évaluation, une interface utilisateur interactive et un déploiement automatisé avec Docker et CI/CD.
 
 ## 🏗️ Architecture du Projet
 
@@ -14,6 +14,9 @@ heart-disease-prediction/
 ├── params.yaml                # Configuration des paramètres
 ├── requirements.txt           # Dépendances Python
 ├── heart-disease.csv          # Dataset (à ajouter)
+├── Dockerfile                 # Configuration Docker
+├── .github/workflows/
+│   └── ci.yaml               # Pipeline CI/CD
 └── README.md                  # Documentation
 ```
 
@@ -75,10 +78,68 @@ dvc pull
 dvc repro 
 ```
 
-2. **Interface utilisateur**:
+3. **Interface utilisateur**:
 ```bash
 streamlit run HD_stream.py
 ```
+
+## 🐳 Déploiement avec Docker
+
+### Utilisation Locale
+
+1. **Construire l'image Docker**:
+```bash
+docker build -t heart-disease-app .
+```
+
+2. **Lancer le conteneur**:
+```bash
+docker run -p 8080:8080 heart-disease-app
+```
+
+3. **Accéder à l'application**:
+```
+http://localhost:8080
+```
+
+### Utilisation avec l'image Docker Hub
+
+```bash
+# Télécharger l'image depuis Docker Hub
+docker pull kabbajstat/my-ml-pipeline:latest
+
+# Lancer le conteneur
+docker run -p 8080:8080 kabbajstat/my-ml-pipeline:latest
+```
+
+## 🔄 Pipeline CI/CD
+
+### Déploiement Automatique
+
+Le projet utilise GitHub Actions pour un déploiement automatique :
+
+1. **Déclenchement** : Push sur la branche `master`
+2. **Tests** : Exécution du pipeline DVC
+3. **Build** : Construction de l'image Docker
+4. **Deploy** : Publication sur Docker Hub
+
+### Configuration des Secrets
+
+Pour le déploiement automatique, configurez ces secrets dans votre repository GitHub :
+
+```
+DOCKER_USERNAME = votre_nom_utilisateur_docker_hub
+DOCKER_PASSWORD = votre_mot_de_passe_ou_token_docker_hub
+```
+
+### Workflow CI/CD
+
+Le pipeline automatique :
+- ✅ Installe les dépendances Python
+- ✅ Exécute le pipeline DVC
+- ✅ Construit l'image Docker
+- ✅ Pousse l'image vers Docker Hub
+- ✅ Déploie automatiquement l'application
 
 ## 📋 Dataset
 
@@ -145,6 +206,25 @@ Interface accessible sur: http://127.0.0.1:5000
 - Visualisation du risque
 - Recommandations basées sur le niveau de risque
 
+## 🛠️ Technologies Utilisées
+
+### Machine Learning & Data Science
+- **Scikit-learn** : Modèles de machine learning
+- **Pandas** : Manipulation des données
+- **NumPy** : Calculs numériques
+- **MLflow** : Tracking des expériences
+
+### Interface & Visualisation
+- **Streamlit** : Interface utilisateur web
+- **Matplotlib** : Visualisations
+- **Seaborn** : Visualisations statistiques
+
+### DevOps & Déploiement
+- **Docker** : Containerisation
+- **GitHub Actions** : CI/CD
+- **Docker Hub** : Registry d'images
+- **DVC** : Versioning des données et pipelines
+
 ## ⚠️ Avertissements
 
 - Cette application est à des fins éducatives uniquement
@@ -165,15 +245,48 @@ Interface accessible sur: http://127.0.0.1:5000
 - Métriques d'évaluation complètes
 - Recommandations médicales contextuelles
 
+### DevOps & Déploiement
+- **Containerisation** avec Docker
+- **CI/CD automatisé** avec GitHub Actions
+- **Déploiement sur Docker Hub**
+- **Pipeline reproductible** avec DVC
+
 ### Bonnes Pratiques
 - Séparation des responsabilités
 - Configuration externalisée
 - Documentation complète
 - Gestion des versions
+- Tests automatisés
+
+## 🚀 Démarrage Rapide
+
+### Option 1 : Utilisation Docker (Recommandée)
+```bash
+docker run -p 8080:8080 kabbajstat/my-ml-pipeline:latest
+```
+Accédez à http://localhost:8080
+
+### Option 2 : Installation Locale
+```bash
+git clone https://github.com/kabbstat/Heart_disease.git
+cd heart-disease-prediction
+pip install -r requirements.txt
+streamlit run HD_stream.py
+```
+
+### Option 3 : Développement
+```bash
+git clone https://github.com/kabbstat/Heart_disease.git
+cd heart-disease-prediction
+pip install -r requirements.txt
+mlflow server --host 127.0.0.1 --port 5000
+dvc repro
+streamlit run HD_stream.py
+```
 
 ## 👤 Auteur
 
 **KABBAJ MOHAMED**
 - Développé avec Streamlit, Scikit-learn et MLflow
 - Pipeline ML complet pour la prédiction des maladies cardiaques
-
+- Déploiement automatisé avec Docker et CI/CD
