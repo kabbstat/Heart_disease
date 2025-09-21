@@ -12,5 +12,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exposer le port et lancer l'app Streamlit
-EXPOSE 8080
-CMD ["streamlit", "run", "HD_stream.py", "--server.port=8080", "--server.address=0.0.0.0"]
+EXPOSE 8585
+CMD ["streamlit", "run", "HD_stream.py", "--server.port=8585", "--server.address=0.0.0.0"]
